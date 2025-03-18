@@ -10,6 +10,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthServer", "Auth\AuthServ
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedProjects", "SharedProjects", "{96272127-2BBA-46FD-BA38-7CED00400C96}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{A8F3103A-5786-41EE-BCC9-CD58EB9245A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthServer.Migrations.MySql", "Auth\AuthServer.Migrations.MySql\AuthServer.Migrations.MySql.csproj", "{212D7696-693C-4BD7-87FB-F32AB751CAEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthServer.Migrations.Sqlite", "Auth\AuthServer.Migrations.Sqlite\AuthServer.Migrations.Sqlite.csproj", "{D72BCC97-BE0C-40DF-80FC-A1CCFE018F8F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +24,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6E79D710-6AF8-4CB7-8DA3-448921D7D1D6} = {A1DA752D-B49C-4AD7-874B-C41B8D78C0C7}
 		{AAA58631-19D2-4B82-A22F-53727351872E} = {46543F79-3F31-472D-86C0-D3EC9A5AD925}
+		{A8F3103A-5786-41EE-BCC9-CD58EB9245A3} = {96272127-2BBA-46FD-BA38-7CED00400C96}
+		{212D7696-693C-4BD7-87FB-F32AB751CAEA} = {46543F79-3F31-472D-86C0-D3EC9A5AD925}
+		{D72BCC97-BE0C-40DF-80FC-A1CCFE018F8F} = {46543F79-3F31-472D-86C0-D3EC9A5AD925}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6E79D710-6AF8-4CB7-8DA3-448921D7D1D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -28,5 +37,17 @@ Global
 		{AAA58631-19D2-4B82-A22F-53727351872E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAA58631-19D2-4B82-A22F-53727351872E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAA58631-19D2-4B82-A22F-53727351872E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8F3103A-5786-41EE-BCC9-CD58EB9245A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8F3103A-5786-41EE-BCC9-CD58EB9245A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8F3103A-5786-41EE-BCC9-CD58EB9245A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8F3103A-5786-41EE-BCC9-CD58EB9245A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{212D7696-693C-4BD7-87FB-F32AB751CAEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{212D7696-693C-4BD7-87FB-F32AB751CAEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{212D7696-693C-4BD7-87FB-F32AB751CAEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{212D7696-693C-4BD7-87FB-F32AB751CAEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D72BCC97-BE0C-40DF-80FC-A1CCFE018F8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D72BCC97-BE0C-40DF-80FC-A1CCFE018F8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D72BCC97-BE0C-40DF-80FC-A1CCFE018F8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D72BCC97-BE0C-40DF-80FC-A1CCFE018F8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
