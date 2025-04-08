@@ -31,9 +31,11 @@ jobs:
           key: ${{ secrets.VM_SSH_KEY }}
           port: 22
           source: |
-            src/AspNet/Manager/ServerManager/*
-            src/AspNet/Shared/*
-          target: "~/servermanager"
+            "./src/AspNet/Manager/ServerManager/*"
+            "./src/AspNet/Shared/*"
+          target: "~/servermanager/"
+          rm: true
+          overwrite: true
 
 
 
