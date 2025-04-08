@@ -18,7 +18,7 @@ jobs:
       - name: 🧾 Checkout code
         uses: actions/checkout@v3
 
-      - name: 📤 Upload ServerManager
+      - name: 📤 Upload ServerManager and Shared folders
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VM_IP }}
@@ -26,8 +26,8 @@ jobs:
           key: ${{ secrets.VM_SSH_KEY }}
           port: 22
           source: |
-            src/AspNet/Manager/ServerManager/
-            src/AspNet/Shared/
+            src/AspNet/Manager/ServerManager
+            src/AspNet/Shared
           target: "~/servermanager"
 
       - name: 🐳 SSH into VM and build + run Docker container
@@ -43,7 +43,7 @@ jobs:
             sudo docker rm servermanager || true
 
             echo "🚧 Building Docker image..."
-            cd ~/servermanager
+            cd ~/servermanager/src/AspNet/Manager/ServerManager
             sudo docker build -t servermanager:latest .
 
             echo "🚀 Running container..."
