@@ -4,10 +4,32 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
+    
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Auth\AuthServer\AuthServer.csproj" />
+      <Compile Remove="ServerInstance\**" />
     </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="ServerInstance\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="ServerInstance\**" />
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="ServerInstance\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Shared\Shared.csproj" />
+    </ItemGroup>
+    
 
 </Project>
