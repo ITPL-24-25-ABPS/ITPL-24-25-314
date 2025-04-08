@@ -50,8 +50,9 @@ jobs:
             sudo docker rm servermanager || true
 
             echo "🚧 Building Docker image..."
-            cd ~/AspNet/src/AspNet/Manager/ServerManager
-            sudo docker build -t servermanager:latest .
+            cd ~/AspNet/src/AspNet
+            sudo docker build -f ./Manager/ServerManager/Dockerfile -t servermanager:latest .
+            
 
             echo "🚀 Running container..."
             sudo docker run -d --name servermanager -p 80:${{ secrets.APP_PORT || 8080 }} servermanager:latest
