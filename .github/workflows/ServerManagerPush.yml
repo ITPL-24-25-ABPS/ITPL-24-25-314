@@ -31,9 +31,12 @@ jobs:
           key: ${{ secrets.VM_SSH_KEY }}
           port: 22
           source: |
-            src/AspNet/Manager/ServerManager
-            src/AspNet/Shared
+            src/AspNet/Manager/ServerManager/**
+            src/AspNet/Shared/**
           target: "~/servermanager"
+          recursive: true
+          strip_components: 3
+
 
       - name: 🐳 SSH into VM and build + run Docker container
         uses: appleboy/ssh-action@v1.0.0
