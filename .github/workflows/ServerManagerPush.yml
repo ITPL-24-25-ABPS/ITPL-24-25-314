@@ -1,0 +1,54 @@
+name: Deploy ServerManager to VM
+
+on:
+  push:
+    paths:
+      - 'src/AspNet/Manager/ServerManager/**'
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧾 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🧰 Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: 🛠️ Publish ServerManager
+        run: |
+          dotnet publish src/AspNet/Manager/ServerManager/ServerManager.csproj -c Release -o out
+
+      - name: 📤 Upload files to Oracle VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VM_IP }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          port: 22
+          source: "./out/*,src/AspNet/Manager/ServerManager/Dockerfile"
+          target: "~/servermanager"
+
+      - name: 🐳 SSH into VM and build + run Docker container
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VM_IP }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          port: 22
+          script: |
+            echo "🔄 Cleaning up old container..."
+            sudo docker stop servermanager || true
+            sudo docker rm servermanager || true
+
+            echo "🚧 Building Docker image..."
+            cd ~/servermanager
+            sudo docker build -t servermanager:latest .
+
+            echo "🚀 Running container..."
+            sudo docker run -d --name servermanager -p 80:${{ secrets.APP_PORT || 5000 }} servermanager:latest
