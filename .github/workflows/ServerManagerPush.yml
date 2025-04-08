@@ -30,10 +30,8 @@ jobs:
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
           port: 22
-          source: |
-            "./src/AspNet/Manager/ServerManager/*"
-            "./src/AspNet/Shared/*"
-          target: "~/servermanager/"
+          source: "./src/AspNet/*"
+          target: "~/AspNet/"
           rm: true
           overwrite: true
 
@@ -52,7 +50,7 @@ jobs:
             sudo docker rm servermanager || true
 
             echo "🚧 Building Docker image..."
-            cd ~/servermanager/src/AspNet/Manager/ServerManager
+            cd ~/AspNet/src/AspNet/Manager/ServerManager
             sudo docker build -t servermanager:latest .
 
             echo "🚀 Running container..."
