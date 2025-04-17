@@ -8,7 +8,7 @@ public class Testing : MonoBehaviour{
     [SerializeField] public Button startServer;
     [SerializeField] public Button startClient;
     // Update is called once per frame
-    void Update()
+    void Awake()
     {
         startHost.onClick.AddListener(() =>
         {
