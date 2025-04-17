@@ -30,12 +30,11 @@ jobs:
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
           port: 22
-          source: |
-            src/AspNet/Manager/ServerManager/**
-            src/AspNet/Shared/**
-          target: "~/servermanager"
-          recursive: true
-          strip_components: 3
+          source: "./src/AspNet/*"
+          target: "~/AspNet/"
+          rm: true
+          overwrite: true
+
 
 
       - name: 🐳 SSH into VM and build + run Docker container
@@ -51,8 +50,9 @@ jobs:
             sudo docker rm servermanager || true
 
             echo "🚧 Building Docker image..."
-            cd ~/servermanager/src/AspNet/Manager/ServerManager
-            sudo docker build -t servermanager:latest .
+            cd ~/AspNet/src/AspNet
+            sudo docker build -f ./Manager/ServerManager/Dockerfile -t servermanager:latest .
+            
 
             echo "🚀 Running container..."
             sudo docker run -d --name servermanager -p 80:${{ secrets.APP_PORT || 8080 }} servermanager:latest
