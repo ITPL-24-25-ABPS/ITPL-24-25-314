@@ -55,4 +55,4 @@ jobs:
             
 
             echo "🚀 Running container..."
-            docker run -d --name servermanager -p ${{ secrets.MANAGER_PORT || 8080 }}:5000 servermanager:latest
+            docker run -d --name servermanager -p ${{ secrets.MANAGER_PORT || 8080 }}:8080 servermanager:latest
