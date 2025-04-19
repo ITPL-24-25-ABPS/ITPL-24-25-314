@@ -18,6 +18,11 @@ jobs:
       - name: 🧾 Checkout code
         uses: actions/checkout@v3
 
+      - name: 🔐 Create appsettings.json
+        run: |
+          echo "${{ secrets.APPSETTINGS_JSON }}" > src/AspNet/Auth/AuthServer/appsettings.json
+          
+
       - name: 📤 Upload AuthServer, Shared and Migration Projects
         uses: appleboy/scp-action@v0.1.7
         with:
