@@ -1,9 +1,9 @@
-name: Deploy ServerManager to VM
+name: Deploy AuthServer to VM
 
 on:
   push:
     paths:
-      - 'src/AspNet/Manager/ServerManager/**'
+      - 'src/AspNet/Auth/**'
       - 'src/AspNet/Shared/**'
     branches:
       - main
@@ -20,10 +20,10 @@ jobs:
 
       - name: 🔍 List contents of upload sources
         run: |
-          ls -la src/AspNet/Manager/ServerManager
+          ls -la src/AspNet/Auth/ServerManager
           ls -la src/AspNet/Shared
 
-      - name: 📤 Upload ServerManager and Shared folders
+      - name: 📤 Upload AuthServer, Shared and Migration Projects
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VM_IP }}
@@ -31,7 +31,7 @@ jobs:
           key: ${{ secrets.VM_SSH_KEY }}
           port: 22
           source: "./src/AspNet/*"
-          target: "~/Manager/"
+          target: "~/Auth/"
           rm: true
           overwrite: true
 
@@ -46,13 +46,13 @@ jobs:
           port: 22
           script: |
             echo "🔄 Cleaning up old container..."
-            sudo docker stop servermanager || true
-            sudo docker rm servermanager || true
+            sudo docker stop authserver || true
+            sudo docker rm authserver || true
 
             echo "🚧 Building Docker image..."
-            cd ~/Manager/src/AspNet
-            sudo docker build -f ./Manager/ServerManager/Dockerfile -t servermanager:latest .
+            cd ~/Auth/src/AspNet
+            sudo docker build -f ./Auth/AuthServer/Dockerfile -t authserver:latest .
             
 
             echo "🚀 Running container..."
-            sudo docker run -d --name servermanager -p 80:${{ secrets.MANAGER_PORT || 8080 }} servermanager:latest
+            sudo docker run -d --name authserver -p 80:${{ secrets.AUTH_PORT || 8080 }} authserver:latest
