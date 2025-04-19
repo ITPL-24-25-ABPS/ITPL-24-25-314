@@ -1,4 +1,4 @@
-name: Deploy ServerManager to Oracle VM
+name: Deploy AuthServer to VM
 
 on:
   push:
