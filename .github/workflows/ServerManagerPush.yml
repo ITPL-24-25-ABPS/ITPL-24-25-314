@@ -29,7 +29,7 @@ jobs:
           host: ${{ secrets.PVE_VM_IP }}
           username: ${{ secrets.PVE_VM_USER }}
           key: ${{ secrets.PVE_VM_SSH_KEY }}
-          port: 22
+          port: 7000
           source: "./src/AspNet/*"
           target: "~/Manager/"
           rm: true
@@ -43,7 +43,7 @@ jobs:
           host: ${{ secrets.PVE_VM_IP }}
           username: ${{ secrets.PVE_VM_USER }}
           key: ${{ secrets.PVE_VM_SSH_KEY }}
-          port: 22
+          port: 7000
           script: |
             echo "🔄 Cleaning up old container..."
             sudo docker stop servermanager || true
