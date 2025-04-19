@@ -18,11 +18,6 @@ jobs:
       - name: 🧾 Checkout code
         uses: actions/checkout@v3
 
-      - name: 🔍 List contents of upload sources
-        run: |
-          ls -la src/AspNet/Auth/ServerManager
-          ls -la src/AspNet/Shared
-
       - name: 📤 Upload AuthServer, Shared and Migration Projects
         uses: appleboy/scp-action@v0.1.7
         with:
