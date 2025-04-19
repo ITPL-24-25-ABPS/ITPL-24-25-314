@@ -26,10 +26,10 @@ jobs:
       - name: 📤 Upload ServerManager and Shared folders
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.VM_IP }}
-          username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_SSH_KEY }}
-          port: 22
+          host: ${{ secrets.PVE_VM_IP }}
+          username: ${{ secrets.PVE_VM_USER }}
+          key: ${{ secrets.PVE_VM_SSH_KEY }}
+          port: 7000
           source: "./src/AspNet/*"
           target: "~/Manager/"
           rm: true
@@ -40,19 +40,19 @@ jobs:
       - name: 🐳 SSH into VM and build + run Docker container
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.VM_IP }}
-          username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_SSH_KEY }}
-          port: 22
+          host: ${{ secrets.PVE_VM_IP }}
+          username: ${{ secrets.PVE_VM_USER }}
+          key: ${{ secrets.PVE_VM_SSH_KEY }}
+          port: 7000
           script: |
             echo "🔄 Cleaning up old container..."
-            sudo docker stop servermanager || true
-            sudo docker rm servermanager || true
+            docker stop servermanager || true
+            docker rm servermanager || true
 
             echo "🚧 Building Docker image..."
             cd ~/Manager/src/AspNet
-            sudo docker build -f ./Manager/ServerManager/Dockerfile -t servermanager:latest .
+            docker build -f ./Manager/ServerManager/Dockerfile -t servermanager:latest .
             
 
             echo "🚀 Running container..."
-            sudo docker run -d --name servermanager -p 80:${{ secrets.MANAGER_PORT || 8080 }} servermanager:latest
+            docker run -d --name servermanager -p ${{ secrets.MANAGER_PORT || 8080 }}:8080 servermanager:latest

@@ -11,15 +11,16 @@ COPY Auth/ Auth/
 COPY Shared/ Shared/
 
 WORKDIR /src/Auth/AuthServer
-RUN dotnet restore ServerManager.csproj
-RUN dotnet build ServerManager.csproj -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet restore AuthServer.csproj
+RUN dotnet build AuthServer.csproj -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src/Auth/AuthServer
-RUN dotnet publish ServerManager.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish AuthServer.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY Auth/AuthServer/appsettings.json ./appsettings.json
 ENTRYPOINT ["dotnet", "AuthServer.dll"]

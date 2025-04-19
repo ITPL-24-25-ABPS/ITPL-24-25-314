@@ -18,18 +18,20 @@ jobs:
       - name: 🧾 Checkout code
         uses: actions/checkout@v3
 
-      - name: 🔍 List contents of upload sources
+      - name: 🔐 Create appsettings.json
         run: |
-          ls -la src/AspNet/Auth/ServerManager
-          ls -la src/AspNet/Shared
+         cat <<EOF > src/AspNet/Auth/AuthServer/appsettings.json
+         ${{ secrets.APPSETTINGS_JSON }}
+         EOF
+          
 
       - name: 📤 Upload AuthServer, Shared and Migration Projects
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.VM_IP }}
-          username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_SSH_KEY }}
-          port: 22
+          host: ${{ secrets.PVE_VM_IP }}
+          username: ${{ secrets.PVE_VM_USER }}
+          key: ${{ secrets.PVE_VM_SSH_KEY }}
+          port: 7000
           source: "./src/AspNet/*"
           target: "~/Auth/"
           rm: true
@@ -40,19 +42,19 @@ jobs:
       - name: 🐳 SSH into VM and build + run Docker container
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.VM_IP }}
-          username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_SSH_KEY }}
-          port: 22
+          host: ${{ secrets.PVE_VM_IP }}
+          username: ${{ secrets.PVE_VM_USER }}
+          key: ${{ secrets.PVE_VM_SSH_KEY }}
+          port: 7000
           script: |
             echo "🔄 Cleaning up old container..."
-            sudo docker stop authserver || true
-            sudo docker rm authserver || true
+            docker stop authserver || true
+            docker rm authserver || true
 
             echo "🚧 Building Docker image..."
             cd ~/Auth/src/AspNet
-            sudo docker build -f ./Auth/AuthServer/Dockerfile -t authserver:latest .
+            docker build -f ./Auth/AuthServer/Dockerfile -t authserver:latest .
             
 
             echo "🚀 Running container..."
-            sudo docker run -d --name authserver -p 80:${{ secrets.AUTH_PORT || 8080 }} authserver:latest
+            docker run -d --name authserver -p ${{ secrets.AUTH_PORT || 8080 }}:8080 authserver:latest
