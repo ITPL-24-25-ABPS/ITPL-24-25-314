@@ -41,13 +41,13 @@ jobs:
           port: 7000
           script: |
             echo "🔄 Cleaning up old container..."
-            sudo docker stop authserver || true
-            sudo docker rm authserver || true
+            docker stop authserver || true
+            docker rm authserver || true
 
             echo "🚧 Building Docker image..."
             cd ~/Auth/src/AspNet
-            sudo docker build -f ./Auth/AuthServer/Dockerfile -t authserver:latest .
+            docker build -f ./Auth/AuthServer/Dockerfile -t authserver:latest .
             
 
             echo "🚀 Running container..."
-            sudo docker run -d --name authserver -p ${{ secrets.AUTH_PORT || 8080 }}:8080 authserver:latest
+            docker run -d --name authserver -p ${{ secrets.AUTH_PORT || 8080 }}:8080 authserver:latest
