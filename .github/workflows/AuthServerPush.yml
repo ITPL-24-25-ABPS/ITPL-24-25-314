@@ -20,9 +20,9 @@ jobs:
 
       - name: 🔐 Create appsettings.json
         run: |
-          echo "${{ secrets.APPSETTINGS_B64 }}" \
-          | base64 --decode \
-          > src/AspNet/Auth/AuthServer/appsettings.json
+         cat <<EOF > src/AspNet/Auth/AuthServer/appsettings.json
+         ${{ secrets.APPSETTINGS_JSON }}
+         EOF
           
 
       - name: 📤 Upload AuthServer, Shared and Migration Projects
