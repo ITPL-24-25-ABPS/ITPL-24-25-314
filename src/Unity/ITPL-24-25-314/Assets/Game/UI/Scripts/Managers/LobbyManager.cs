@@ -9,10 +9,15 @@ using Unity.Services.Lobbies.Models;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LobbyManager : MonoBehaviour{
     public static LobbyManager Instance { get; private set; }
     
+    [Header("Start Screen")]
+    [SerializeField] private GameObject startScreenParent;
+    
+    [Space(10)]
     [Header("Lobby Creation")] 
     [SerializeField] private GameObject lobbyCreationParent;
     [SerializeField] private TMP_InputField createLobbyNameInputField;
@@ -24,18 +29,28 @@ public class LobbyManager : MonoBehaviour{
     [SerializeField] private Transform lobbyContentParent;
     [SerializeField] private Transform lobbyItemPrefab;
     
+    [Space(10)]
+    [Header("Lobby Info")]
+    [SerializeField] private GameObject lobbyInfoParent;
+    
     public string joinedLobbyId;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private async void Start()
     {
+        startScreenParent.SetActive(true);
+        
         Instance = this;
         
         await UnityServices.InitializeAsync();
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        
+        
     }
 
-    private async void ShowLobbies() {
+    public async void ShowLobbies() {
+        startScreenParent.SetActive(false);
+        lobbyListParent.SetActive(true);
         while (Application.isPlaying && lobbyCreationParent.activeInHierarchy){
             QueryResponse queryResponse = await LobbyService.Instance.QueryLobbiesAsync();
 
@@ -45,9 +60,16 @@ public class LobbyManager : MonoBehaviour{
 
             foreach (Lobby lobby in queryResponse.Results){
                 Transform newLobbyItem = Instantiate(lobbyItemPrefab, lobbyContentParent);
+                newLobbyItem.GetChild(1).GetComponent<TextMeshProUGUI>().text = lobby.Name;
+                newLobbyItem.GetChild(2).GetComponent<TextMeshProUGUI>().text = lobby.Players.Count + "/" + lobby.MaxPlayers;
             }
             await Task.Delay(1000);
         }
+    }
+    public void ShowLobbyCreation(){
+        startScreenParent.SetActive(false);
+        lobbyCreationParent.SetActive(true);
+        lobbyListParent.SetActive(false);
     }
 
     // Update is called once per frame
@@ -68,7 +90,11 @@ public class LobbyManager : MonoBehaviour{
             Debug.Log(e);
         }
         lobbyCreationParent.SetActive(false);
-        lobbyListParent.SetActive(true);
-        ShowLobbies();
+        lobbyInfoParent.SetActive(true);
+    }
+
+    public void StartGame(){
+        // Load Main Game Scene
+        SceneManager.LoadScene("MainGame");
     }
 }
