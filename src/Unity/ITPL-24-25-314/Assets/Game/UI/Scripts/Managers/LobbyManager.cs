@@ -45,23 +45,21 @@ public class LobbyManager : MonoBehaviour{
         await UnityServices.InitializeAsync();
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
         
-        
     }
 
     public async void ShowLobbies() {
         startScreenParent.SetActive(false);
         lobbyListParent.SetActive(true);
-        while (Application.isPlaying && lobbyCreationParent.activeInHierarchy){
+        while (Application.isPlaying && lobbyListParent.activeSelf){
             QueryResponse queryResponse = await LobbyService.Instance.QueryLobbiesAsync();
-
             foreach (Transform t in lobbyContentParent){
                 Destroy(t.gameObject);
             }
 
             foreach (Lobby lobby in queryResponse.Results){
                 Transform newLobbyItem = Instantiate(lobbyItemPrefab, lobbyContentParent);
-                newLobbyItem.GetChild(1).GetComponent<TextMeshProUGUI>().text = lobby.Name;
-                newLobbyItem.GetChild(2).GetComponent<TextMeshProUGUI>().text = lobby.Players.Count + "/" + lobby.MaxPlayers;
+                newLobbyItem.GetChild(2).GetComponent<TextMeshProUGUI>().text = lobby.Name;
+                newLobbyItem.GetChild(1).GetComponent<TextMeshProUGUI>().text = lobby.Players.Count + "/" + lobby.MaxPlayers;
             }
             await Task.Delay(1000);
         }
@@ -90,7 +88,8 @@ public class LobbyManager : MonoBehaviour{
             Debug.Log(e);
         }
         lobbyCreationParent.SetActive(false);
-        lobbyInfoParent.SetActive(true);
+        lobbyInfoParent.SetActive(false);
+        lobbyListParent.SetActive(true);
     }
 
     public void StartGame(){
