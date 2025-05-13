@@ -12,7 +12,7 @@ public class ServerEntry
     public required bool IsPrivate { get; set; }
     public string? Passcode { get; set; }
 
-    private static readonly string ServerPath = "../win/PR.exe";
+    public static string? ServerPath { get; set; }
     private Process Process { get; set; }
 
     public ServerEntry()
@@ -25,14 +25,21 @@ public class ServerEntry
         Process = new Process {
             StartInfo = new ProcessStartInfo {
                 FileName = ServerPath,
-                Arguments = $"-port {Port}",
+                Arguments = $"--port {Port}",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 WorkingDirectory = Path.GetDirectoryName(ServerPath)
             }
         };
+
         Process.Start();
         Console.WriteLine(Process.Id);
+    }
+
+    public void AddExitHandler(EventHandler handler)
+    {
+        Process.EnableRaisingEvents = true;
+        Process.Exited += handler;
     }
 
     public void KillProcess()

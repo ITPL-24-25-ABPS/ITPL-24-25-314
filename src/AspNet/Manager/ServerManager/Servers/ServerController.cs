@@ -8,6 +8,7 @@ namespace ServerManager.Servers;
 public class ServerController(ILogger<ServerController> logger)
 {
     private List<ServerEntry> Servers { get; set; } = new();
+    private List<ServerEntry> ExitedServers { get; set; } = new();
 
     public List<ServerEntry> GetServers()
     {
@@ -28,12 +29,20 @@ public class ServerController(ILogger<ServerController> logger)
             IsPrivate = model.IsPrivate,
             Passcode = model.Passcode
         };
-        Servers.Add(e);
-        e.StartProcess();
 
         try
         {
             Servers.Add(e);
+            e.StartProcess();
+            e.AddExitHandler((sender, args) =>
+            {
+                logger.LogInformation($"Server {e.ServerName} has exited.");
+                e.IsOnline = false;
+                e.Players.Clear();
+                ExitedServers.Add(e);
+                Servers.Remove(e);
+            });
+
             return new ResponseModel<ServerEntry>
             {
                 Success = true,
