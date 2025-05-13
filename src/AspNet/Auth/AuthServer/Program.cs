@@ -23,8 +23,6 @@ var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"] ?? string.Emp
 
 // -------------------- DB --------------------------
 
-if(builder.Environment.IsDevelopment())
-    builder.Configuration.AddJsonFile("./Databases/connectionStrings.json", optional: true, reloadOnChange: true);
 
 IConfiguration config = builder.Configuration.GetRequiredSection("ConnectionString");
 
