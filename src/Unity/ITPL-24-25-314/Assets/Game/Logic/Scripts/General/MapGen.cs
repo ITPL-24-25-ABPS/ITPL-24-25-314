@@ -1,4 +1,9 @@
+using System.Collections.Generic;
+using Game.Logic.Scripts.General;
+using NUnit.Framework;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
 public class MapGen : MonoBehaviour
@@ -14,6 +19,7 @@ public class MapGen : MonoBehaviour
     [SerializeField] private GameObject _tileDesertPrefab;
     [SerializeField] private GameObject _tileGoldPrefab;
     [SerializeField] private GameObject _tileWastelandPrefab;
+    [SerializeField] private GameObject _poiPrefab;
 
     [SerializeField] private float _noiseSeed = 1276473;
     [SerializeField] private float _noiseFrequency = 100f;
@@ -21,11 +27,14 @@ public class MapGen : MonoBehaviour
     [SerializeField] private float _DesertThreashold = 0.5f;
     [SerializeField] private float _GoldThreashold = 0.5f;
     [SerializeField] private float _WasteThreashold = 0.5f;
-    
+
+    private TileScript[,] _tiles;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         MakeMapGrid();
+        PlacePOIs(2);
     }
 
     private Vector2 GetHexCoords(int x, int z){
@@ -73,10 +82,55 @@ public class MapGen : MonoBehaviour
                 }
 
                 GameObject tile = Instantiate(prefab, position, rotation, _mapParent);
+                tile.AddComponent<TileScript>();
+                tile.AddComponent<BoxCollider>();
+                var script = tile.GetComponent<TileScript>();
+                script.X = x;
+                script.Z = z;
                 AddHexBorder(tile);
             }
         }
     }
+
+    void PlacePOIs(int percentage)
+    {
+        Debug.Log("Placing");
+        List<Transform> tiles = new ();
+        List<Transform> poiTiles = new ();
+
+        for (int i = 0; i < _mapParent.childCount; i++)
+            tiles.Add(_mapParent.GetChild(i));
+
+        Debug.Log("Tiles: " + tiles.Count);
+
+        int numPOIs = Mathf.FloorToInt(tiles.Count * percentage / 100f);
+
+        Debug.Log("Num POIs: " + numPOIs);
+
+
+        for (int i = 0; i < numPOIs; i++)
+        {
+            int randomIndex = Random.Range(0, tiles.Count);
+            Transform tile = tiles[randomIndex];
+            TileScript tileScript = tile.GetComponent<TileScript>();
+            tileScript.poiType = POIType.Resource; // Set the POI type
+            tiles.RemoveAt(randomIndex); // Remove the tile from the list to avoid duplicates
+            poiTiles.Add(tile);
+        }
+
+        foreach (var tile in poiTiles)
+        {
+            var script = tile.GetComponent<TileScript>();
+            var transform = tile.transform;
+            Object cube = Instantiate(_poiPrefab, new Vector3() {x = tile.position.x, y = tile.position.y, z = tile.position.z}, Quaternion.identity, tile);
+            var poiScript = cube.GetComponent<POIScript>();
+            poiScript.tile = tile;
+            cube.name = "POI";
+        }
+
+    }
+
+
     void AddHexBorder(GameObject tile)
     {
         LineRenderer lineRenderer = tile.AddComponent<LineRenderer>();
@@ -101,4 +155,6 @@ public class MapGen : MonoBehaviour
         }
         lineRenderer.SetPosition(6, lineRenderer.GetPosition(0)); // Close the hexagon
     }
+
+
 }
