@@ -10,6 +10,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LobbyManager : MonoBehaviour{
     public static LobbyManager Instance { get; private set; }
@@ -32,6 +33,21 @@ public class LobbyManager : MonoBehaviour{
     [Space(10)]
     [Header("Lobby Info")]
     [SerializeField] private GameObject lobbyInfoParent;
+    
+    [Space(10)]
+    [Header("Joined lobby")]
+    [SerializeField] private GameObject joinedLobbyParent;
+    [SerializeField] private Transform playerItemPrefab;
+    [SerializeField] private Transform playerListParent;
+    [SerializeField] private TextMeshProUGUI joinedLobbyNameText;
+    [SerializeField] private TextMeshProUGUI joinedLobbyGamemodeText;
+    [SerializeField] private GameObject joinedLobbyStartButton;
+
+    [Space(10)]
+    [Header("Password protection")]
+    [SerializeField] private Button inputPasswordButton;
+    [SerializeField] private TMP_InputField inputPasswordField;
+    [SerializeField] private GameObject inputPasswordParent;
     
     public string joinedLobbyId;
     
