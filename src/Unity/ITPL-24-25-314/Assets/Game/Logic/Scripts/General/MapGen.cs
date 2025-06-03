@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Game.Logic.Scripts.General;
 using NUnit.Framework;
 using Unity.VisualScripting;
@@ -20,6 +21,7 @@ public class MapGen : MonoBehaviour
     [SerializeField] private GameObject _tileGoldPrefab;
     [SerializeField] private GameObject _tileWastelandPrefab;
     [SerializeField] private GameObject _poiPrefab;
+    [SerializeField] private GameObject _castlePrefab;
 
     [SerializeField] private float _noiseSeed = 1276473;
     [SerializeField] private float _noiseFrequency = 100f;
@@ -34,6 +36,7 @@ public class MapGen : MonoBehaviour
     void Start()
     {
         MakeMapGrid();
+        PlaceCastle();
         PlacePOIs(2);
     }
 
@@ -92,6 +95,32 @@ public class MapGen : MonoBehaviour
         }
     }
 
+    void PlaceCastle(int players = 2)
+    {
+        List<Transform> tiles = new ();
+
+        for (int i = 0; i < _mapParent.childCount; i++)
+            tiles.Add(_mapParent.GetChild(i));
+
+        List<Transform> selectedTiles = new List<Transform>();
+        for (int i = 0; i < players; i++)
+        {
+            int random = Random.Range(0, tiles.Count);
+            selectedTiles.Add(tiles[random]);
+            tiles.RemoveAt(random);
+        }
+
+        for (int i = 0; i < players; i++)
+        {
+            var tile = selectedTiles[i];
+            tile.gameObject.tag = "CastleTile";
+            Object cube = Instantiate(_castlePrefab, new Vector3() {x = tile.position.x, y = tile.position.y + 2, z = tile.position.z}, Quaternion.identity, tile);
+            var poiScript = cube.GetComponent<CastleScript>();
+            poiScript.Player = i + 1;
+            cube.name = "Castle";
+        }
+    }
+
     void PlacePOIs(int percentage)
     {
         Debug.Log("Placing");
@@ -102,6 +131,8 @@ public class MapGen : MonoBehaviour
             tiles.Add(_mapParent.GetChild(i));
 
         Debug.Log("Tiles: " + tiles.Count);
+
+        tiles = tiles.Where(t => !t.CompareTag("CastleTile")).ToList();
 
         int numPOIs = Mathf.FloorToInt(tiles.Count * percentage / 100f);
 

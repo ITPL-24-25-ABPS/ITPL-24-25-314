@@ -173,6 +173,7 @@ MonoBehaviour:
   _tileGoldPrefab: {fileID: 5916614959848950618, guid: a280cb11de347f448a43cb30e3b1b500, type: 3}
   _tileWastelandPrefab: {fileID: 5916614959848950618, guid: 9c29d95c4a4bd164e95cd9c62aa4628c, type: 3}
   _poiPrefab: {fileID: 7196995793135050544, guid: a4b3ab23fea5cb3498a359375791bff0, type: 3}
+  _castlePrefab: {fileID: 5107786069494438732, guid: 23b58c6d208f00f48857ce6547d3245a, type: 3}
   _noiseSeed: -1
   _noiseFrequency: 100
   _WaterThreashold: 0.3
