@@ -57,4 +57,4 @@ jobs:
             
 
             echo "🚀 Running container..."
-            docker run -d --name authserver -p ${{ secrets.AUTH_PORT || 8080 }}:8080 authserver:latest
+            docker run -d --name authserver --restart always -p ${{ secrets.AUTH_PORT || 8080 }}:8080 authserver:latest
