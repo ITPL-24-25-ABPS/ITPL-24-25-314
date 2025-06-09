@@ -85,7 +85,7 @@ public class Unit : MonoBehaviour
             Vector3 unitPos = transform.position;
 
             MapGen map = FindObjectOfType<MapGen>();
-            GameObject[,] fogGrid = map.FogGrid; // create public getter if needed
+            GameObject[,] fogGrid = map.FogGrid; 
 
             for (int x = 0; x < fogGrid.GetLength(0); x++)
             {
@@ -96,7 +96,7 @@ public class Unit : MonoBehaviour
 
                     if (distance <= radius)
                     {
-                        fogGrid[x, z].SetActive(false); // turn off fog
+                        fogGrid[x, z].SetActive(false);
                     }
                 }
             }

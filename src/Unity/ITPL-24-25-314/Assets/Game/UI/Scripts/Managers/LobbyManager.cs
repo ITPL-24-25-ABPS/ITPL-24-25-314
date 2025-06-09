@@ -136,6 +136,10 @@ public class LobbyManager : MonoBehaviour{
                 Transform newLobbyItem = Instantiate(lobbyItemPrefab, lobbyContentParent);
                 newLobbyItem.GetChild(2).GetComponent<TextMeshProUGUI>().text = lobby.Name;
                 newLobbyItem.GetChild(1).GetComponent<TextMeshProUGUI>().text = lobby.Players.Count + "/" + lobby.MaxPlayers;
+                newLobbyItem.GetChild(0).GetComponent<Button>().onClick.AddListener(() => {
+                    bool needPassword = lobby.Data != null && lobby.Data.ContainsKey("Password");
+                    JoinLobby(lobby.Id, needPassword);
+                });
             }
             await Task.Delay(1000);
         }
