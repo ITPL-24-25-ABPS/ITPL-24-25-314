@@ -9,25 +9,46 @@ public class MapGen : MonoBehaviour
     [SerializeField] private float _tileSize = 1;
     [SerializeField] private Transform _mapParent;
     
+    [Space(10)]
+    [Header("Tile Prefabs")]
     [SerializeField] private GameObject _tileGrassPrefab;
     [SerializeField] private GameObject _tileWaterPrefab;
     [SerializeField] private GameObject _tileDesertPrefab;
     [SerializeField] private GameObject _tileGoldPrefab;
     [SerializeField] private GameObject _tileWastelandPrefab;
 
+    [Space(10)]
+    [Header("Randomness Settings")]
     [SerializeField] private float _noiseSeed = 1276473;
     [SerializeField] private float _noiseFrequency = 100f;
     [SerializeField] private float _WaterThreashold = 0.5f;
     [SerializeField] private float _DesertThreashold = 0.5f;
     [SerializeField] private float _GoldThreashold = 0.5f;
     [SerializeField] private float _WasteThreashold = 0.5f;
+
+    [Space(10)] [Header("Fog")] 
+    [SerializeField] private GameObject _fogOverlayPrefab;
+    private GameObject[,] _fogOverlays;
+    public GameObject[,] FogGrid => _fogOverlays;
     
+    public static GameObject[,] FogOverlays;
+    public static int MapWidth, MapHeight;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        MapWidth = _mapWidth;
+        MapHeight = _mapHeigth;
+        FogOverlays = _fogOverlays;
         MakeMapGrid();
     }
 
+    public static GameObject GetTileFog(int x, int z)
+    {
+        if (x >= 0 && x < MapWidth && z >= 0 && z < MapHeight)
+            return FogOverlays[x, z];
+        return null;
+    }
+    
     private Vector2 GetHexCoords(int x, int z){
             float xPos = x * (_tileSize * 0.75f * 2); // 1.5 times _tileSize
             float zPos = z * (_tileSize * Mathf.Sqrt(3)) + (x % 2) * (_tileSize * Mathf.Sqrt(3) / 2.0f);
@@ -37,6 +58,7 @@ public class MapGen : MonoBehaviour
     // Update is called once per frame
     void MakeMapGrid()
     {
+        _fogOverlays = new GameObject[_mapWidth, _mapHeigth];
         for (int x = 0; x < _mapWidth; x++)
         {
             for (int z = 0; z < _mapHeigth; z++)
@@ -74,6 +96,9 @@ public class MapGen : MonoBehaviour
 
                 GameObject tile = Instantiate(prefab, position, rotation, _mapParent);
                 AddHexBorder(tile);
+                
+                GameObject fog = Instantiate(_fogOverlayPrefab, position + Vector3.up * 0.01f, rotation, tile.transform);
+                _fogOverlays[x, z] = fog;
             }
         }
     }

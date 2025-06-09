@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 8807971476002240047}
   - component: {fileID: 6137852174991819676}
   - component: {fileID: 1514236607774685485}
+  - component: {fileID: 1342085007060471994}
   m_Layer: 5
   m_Name: JoinBtn
   m_TagString: Untagged
@@ -256,7 +257,33 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6137852174991819676}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1342085007060471994}
+        m_TargetAssemblyTypeName: Game.UI.Scripts.General.JoinLobbyBtn, Assembly-CSharp
+        m_MethodName: JoinLobbyButtonPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1342085007060471994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4005906763228193896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 438e84fcfb824a32be67c3e1b892f72c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  needPassword: 0
+  lobbyId: 
 --- !u!1 &4302073213072955358
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 3078ae27edb66534787d012b1bf9b1ff, type: 3}
       propertyPath: m_Name
-      value: Gold
+      value: Grass
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 3078ae27edb66534787d012b1bf9b1ff, type: 3}
       propertyPath: m_TagString
-      value: POI
+      value: MainTile
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 3078ae27edb66534787d012b1bf9b1ff, type: 3}
       propertyPath: m_LocalPosition.x
@@ -59,38 +59,9 @@ PrefabInstance:
     - target: {fileID: 2300000, guid: 3078ae27edb66534787d012b1bf9b1ff, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 3a66b8c6698195147995851629adbd7c, type: 2}
+      objectReference: {fileID: 2100000, guid: 2a7c37d4fad92e84abf8498d4bf343c0, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: 3078ae27edb66534787d012b1bf9b1ff, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -3340517030992293355}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3078ae27edb66534787d012b1bf9b1ff, type: 3}
---- !u!1 &5916614959848950618 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: 3078ae27edb66534787d012b1bf9b1ff, type: 3}
-  m_PrefabInstance: {fileID: 5916614959848918522}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &-3340517030992293355
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5916614959848950618}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.99999994, y: 0.05000021, z: 0.86602557}
-  m_Center: {x: 0.000000029802322, y: 0.025, z: -0.000000029802322}
